@@ -1,38 +1,39 @@
 let map;
 let marker;
-let location = { lat: 51.505, lng: -0.09 }; // Default location
+let currentLocation = { lat: 51.505, lng: -0.09 }; // Default location
 
 // Initialize the map
 function initMap() {
-    map = L.map('mapid').setView([location.lat, location.lng], 13);
+    map = L.map('mapid').setView([currentLocation.lat, currentLocation.lng], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    marker = L.marker([location.lat, location.lng], {draggable: true}).addTo(map);
+    marker = L.marker([currentLocation.lat, currentLocation.lng], {draggable: true}).addTo(map);
     marker.on('dragend', function (e) {
-        location = marker.getLatLng();
+        currentLocation = marker.getLatLng();
     });
 }
+
 
 // Function to get location from browser
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-            location = {
+            currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            localStorage.setItem('location', JSON.stringify(location));
-            map.setView([location.lat, location.lng]);
-            marker.setLatLng([location.lat, location.lng]);
+            localStorage.setItem('currentLocation', JSON.stringify(currentLocation));
+            map.setView([currentLocation.lat, currentLocation.lng]);
+            marker.setLatLng([currentLocation.lat, currentLocation.lng]);
         }, () => {
-            const savedLocation = localStorage.getItem('location');
+            const savedLocation = localStorage.getItem('currentLocation');
             if (savedLocation) {
-                location = JSON.parse(savedLocation);
-                map.setView([location.lat, location.lng]);
-                marker.setLatLng([location.lat, location.lng]);
+                currentLocation = JSON.parse(savedLocation);
+                map.setView([currentLocation.lat, currentLocation.lng]);
+                marker.setLatLng([currentLocation.lat, currentLocation.lng]);
             }
         });
     } else {
@@ -40,8 +41,16 @@ function getLocation() {
     }
 }
 
-
-
+// Function to get location from Nominatim OpenStreetMap
+async function getLocationFromOSM(city) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?city=${city}&format=json`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 // Function to handle button click
 async function handleClick(buttonNum) {
@@ -63,7 +72,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     getLocation();
 
     // Add event listeners to buttons
-    document.querySelectorAll('.btn').forEach((button) => {
-        button.addEventListener('click', (event) => handleClick(event.target.dataset.num));
+    document.querySelectorAll('.btn').forEach((button, index) => {
+        button.addEventListener('click', () => handleClick(index + 1));
     });
+
+    // Add event listener to location search button
+    document.getElementById('location-search').addEventListener('click', getLocationFromOSM);
 });
