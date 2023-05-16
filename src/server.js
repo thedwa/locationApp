@@ -4,16 +4,15 @@ const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const port = process.env.PORT || 3002;
 
 app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
-app.post('/api/call-openai', async (req, res) => {
-  const { location, buttonNum } = req.body;
-  
-  const prompt = `The user is located at ${location.lat}, ${location.lng}. They pressed button ${buttonNum}.`;
+app.post('/api/generate-gap-text', async (req, res) => {
+  const data = req.body;
 
   try {
     const fetch = (await import('node-fetch')).default;
@@ -34,5 +33,8 @@ app.post('/api/call-openai', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+//start the port
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});

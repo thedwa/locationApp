@@ -21,3 +21,11 @@ body {
   transform: translateY(-0.15em);
   background-color: lightgray;
 }
+
+.btn.active {
+    background-color: lightgray;
+}
+
+.large-text {
+    font-size: 24px;
+}
