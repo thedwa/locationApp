@@ -3,19 +3,54 @@
 <head>
     <title>Location App</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+    <div id="overlay" class="overlay">
+        <div class="spinner"></div>
+    </div>
+    
     <div id="mapid"></div>
     <input type="text" id="search-box" placeholder="Enter a city name">
-    <button id="citySearchBtn" onclick="search()">Search</button>
+    <button id="citySearchBtn">Search</button>
     <button class="btn" onclick="selectCategory('history')" id="historyBtn">History</button>
     <button class="btn" onclick="selectCategory('activities')" id="activitiesBtn">Activities</button>
     <button class="btn" onclick="selectCategory('politics')" id="politicsBtn">Politics</button>
     <button class="btn" onclick="selectCategory('food')" id="foodBtn">Food</button>
     <button class="btn" onclick="selectCategory('culture')" id="cultureBtn">Culture</button>
     <button class="btn" onclick="selectCategory('funfact')" id="funfactBtn">Funfact</button>
+    <button class="btn" onclick="selectCategory('nearby')" id="nearbyBtn">All</button>
     <h1 id="city-name"></h1>
+    
     <p id="search-message" class="large-text"></p>
+    <p id="repsonse-message" class="small-text"></p>
 
     <script src="app.js"></script>
 </body>

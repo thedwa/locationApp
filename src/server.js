@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
-app.post('/api/generate-gap-text', async (req, res) => {
+app.post('/api/generateLocationInfo', async (req, res) => {
   const data = req.body;
 
   try {
