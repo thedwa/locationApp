@@ -24,13 +24,24 @@ function getLocation() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
+            localStorage.setItem('location', JSON.stringify(location));
             map.setView([location.lat, location.lng]);
             marker.setLatLng([location.lat, location.lng]);
+        }, () => {
+            const savedLocation = localStorage.getItem('location');
+            if (savedLocation) {
+                location = JSON.parse(savedLocation);
+                map.setView([location.lat, location.lng]);
+                marker.setLatLng([location.lat, location.lng]);
+            }
         });
     } else {
         alert("Geolocation is not supported by this browser.");
     }
 }
+
+
+
 
 // Function to handle button click
 async function handleClick(buttonNum) {
