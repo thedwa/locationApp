@@ -16,21 +16,21 @@ app.post('/api/call-openai', async (req, res) => {
   const prompt = `The user is located at ${location.lat}, ${location.lng}. They pressed button ${buttonNum}.`;
 
   try {
-    const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-      prompt,
-      max_tokens: 100,
-    }, {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-      }
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify(data),
     });
 
-    const { data } = response;
-    res.json(data);
+    const json = await response.json();
+    res.send(json);
+    console.log(json);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while calling the OpenAI API' });
+    res.status(500).send({ message: 'Error making request to OpenAI API' });
   }
 });
 

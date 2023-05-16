@@ -16,7 +16,6 @@ function initMap() {
     });
 }
 
-
 // Function to get location from browser
 function getLocation() {
     if (navigator.geolocation) {
@@ -25,11 +24,11 @@ function getLocation() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            localStorage.setItem('currentLocation', JSON.stringify(currentLocation));
+            localStorage.setItem('location', JSON.stringify(currentLocation));
             map.setView([currentLocation.lat, currentLocation.lng]);
             marker.setLatLng([currentLocation.lat, currentLocation.lng]);
         }, () => {
-            const savedLocation = localStorage.getItem('currentLocation');
+            const savedLocation = localStorage.getItem('location');
             if (savedLocation) {
                 currentLocation = JSON.parse(savedLocation);
                 map.setView([currentLocation.lat, currentLocation.lng]);
@@ -41,7 +40,7 @@ function getLocation() {
     }
 }
 
-// Function to get location from Nominatim OpenStreetMap
+// Function to get location data from OpenStreetMap
 async function getLocationFromOSM(city) {
     try {
         const response = await fetch(`https://nominatim.openstreetmap.org/search?city=${city}&format=json`);
@@ -52,6 +51,24 @@ async function getLocationFromOSM(city) {
     }
 }
 
+// Function to handle search button click
+async function handleSearchClick() {
+    let searchBox = document.getElementById('search-box');
+    let cityNameElement = document.getElementById('city-name');
+    let city = searchBox.value;
+    
+    let location = await getLocationFromOSM(city);
+    if (location) {
+        currentLocation = { lat: location.lat, lng: location.lon };
+        map.setView([currentLocation.lat, currentLocation.lng], 13);
+        marker.setLatLng([currentLocation.lat, currentLocation.lng]);
+        cityNameElement.textContent = city;
+    } else {
+        alert('Could not find location');
+    }
+}
+
+
 // Function to handle button click
 async function handleClick(buttonNum) {
     // Send a request to your backend with the selected location and buttonNum
@@ -60,7 +77,7 @@ async function handleClick(buttonNum) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ location, buttonNum }),
+        body: JSON.stringify({ location: currentLocation, buttonNum }),
     });
 
     const data = await response.json();
@@ -72,10 +89,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     getLocation();
 
     // Add event listeners to buttons
-    document.querySelectorAll('.btn').forEach((button, index) => {
-        button.addEventListener('click', () => handleClick(index + 1));
+    document.querySelectorAll('.btn').forEach((button) => {
+        console.log(button);
+        button.addEventListener('click', (event) => handleClick(event.target.dataset.num));
     });
 
-    // Add event listener to location search button
-    document.getElementById('location-search').addEventListener('click', getLocationFromOSM);
+    // Add event listener to search button
+    document.getElementById('search-btn').addEventListener('click', handleSearchClick);
 });
+document.ATTRIBUTE_NODE
+// create a new variable

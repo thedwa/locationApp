@@ -2,19 +2,20 @@
 <html>
 <head>
     <title>Location App</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <div id="mapid"></div>
-    <input type="text" id="city-input" placeholder="Enter city name">
+    <input type="text" id="search-box" placeholder="Enter a city name">
     <button id="search-btn">Search</button>
     <button class="btn" data-num="1">History</button>
     <button class="btn" data-num="2">Activities</button>
     <button class="btn" data-num="3">Politics</button>
     <button class="btn" data-num="4">Food</button>
     <button class="btn" data-num="5">Culture</button>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <button class="btn" data-num="6">Funfact</button>
+    <h1 id="city-name"></h1>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
