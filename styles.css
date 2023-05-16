@@ -1,0 +1,23 @@
+body {
+    background-color: rgb(240, 240, 240);
+}
+
+#mapid {
+    height: 10;
+}
+
+.btn {
+    margin: 5px;
+    padding: 25px;
+    background-color: white;
+    border: none;
+    border-radius: 15%;
+    cursor:pointer;
+}
+
+.btn:hover,
+.btn:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.15em);
+  background-color: lightgray;
+}
